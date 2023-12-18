@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Calendar from "./component/Calendar";
 
 import "./App.css";
@@ -8,9 +8,23 @@ import "./App.css";
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [months, setMonths] = useState([]);
+  const calendarRef = useRef(null);
 
   useEffect(() => {
     generateMonths();
+
+    const currentMonth = new Date().getMonth();
+
+    const scrollPosition = 6 * 360;
+
+    // Set the scroll position using scrollTo
+    if (calendarRef.current) {
+      console.log(calendarRef.current);
+      calendarRef.current.scrollTo({
+        top: scrollPosition,
+        behavior: "smooth",
+      });
+    }
   }, []);
 
   const generateMonths = () => {
@@ -27,7 +41,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div ref={calendarRef} style={{ overflowY: "scroll", height: "100vh" }}>
       {months.map((ele, index) => (
         <Calendar key={index} reqMonths={ele[0]} reqYear={ele[1]} />
       ))}
