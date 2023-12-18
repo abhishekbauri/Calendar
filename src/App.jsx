@@ -20,16 +20,18 @@ function App() {
     for (let i = currentMonth - 6; i <= currentMonth + 6; i++) {
       const newDate = new Date(currentDate);
       newDate.setMonth(i);
-      monthsArray.push(newDate);
+      let newPair = [newDate.getMonth(), newDate.getFullYear()];
+      monthsArray.push(newPair);
     }
-
     setMonths(monthsArray);
-    // console.log(monthsArray);
   };
+
   return (
-    <>
-      <Calendar />
-    </>
+    <div>
+      {months.map((ele, index) => (
+        <Calendar key={index} reqMonths={ele[0]} reqYear={ele[1]} />
+      ))}
+    </div>
   );
 }
 
