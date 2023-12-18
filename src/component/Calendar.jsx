@@ -1,7 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import "./calendar.css";
 
-const Calendar = () => {
+const Calendar = (props) => {
+  const { reqMonths, reqYear } = props;
+
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
@@ -11,9 +14,11 @@ const Calendar = () => {
     setSelectedDate(date);
   };
 
+  let isToday;
+
   const renderCalendar = () => {
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth();
+    const year = reqYear;
+    const month = reqMonths;
     const days = daysInMonth(year, month);
     const firstDay = getFirstDayOfMonth(year, month);
 
@@ -25,7 +30,7 @@ const Calendar = () => {
 
     for (let day = 1; day <= days; day++) {
       const currentDate = new Date(year, month, day);
-      const isToday = currentDate.toDateString() === new Date().toDateString();
+      isToday = currentDate.toDateString() === new Date().toDateString();
       const isSelected =
         currentDate.toDateString() === selectedDate.toDateString();
 
@@ -45,41 +50,27 @@ const Calendar = () => {
     return calendarArray;
   };
 
+  const monthsArray = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   return (
     <div className="calendar-container">
       <div className="calendar-header">
-        <button
-          onClick={() =>
-            setSelectedDate(
-              new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth() - 1,
-                1
-              )
-            )
-          }
-        >
-          Previous Month
-        </button>
         <h2>
-          {selectedDate.toLocaleString("default", {
-            month: "long",
-            year: "numeric",
-          })}
+          {monthsArray[reqMonths]} {reqYear}
         </h2>
-        <button
-          onClick={() =>
-            setSelectedDate(
-              new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth() + 1,
-                1
-              )
-            )
-          }
-        >
-          Next Month
-        </button>
       </div>
       <div className="day-names">
         <div>Sun</div>
